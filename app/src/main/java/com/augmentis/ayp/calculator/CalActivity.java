@@ -12,11 +12,14 @@ import java.lang.reflect.Array;
 public class CalActivity extends AppCompatActivity {
     private String tod = "0";
     private String TAG="TEST";
+    private String totalString="";
     private int total,number1,number2 = 0;
+    private int u =1;
     private TextView primarytxt,secondarytxt;
     private String num1="";
     private String num2="";
     private String operate="";
+    private String operateSecondary="";
     private Button result,clean;
 
     Button[] numberButtons;
@@ -66,6 +69,7 @@ public class CalActivity extends AppCompatActivity {
                 num2="";
                 number1=0;
                 number2=0;
+                u=1;
             }
         });
 
@@ -75,6 +79,7 @@ public class CalActivity extends AppCompatActivity {
                 if(num1!=""&&num2!=""){
                     Log.d(TAG,"hoole");
                     calculate();
+                    u=1;
                 }
             }
         });
@@ -98,7 +103,32 @@ public class CalActivity extends AppCompatActivity {
             //
         }
 
-        String totalString = String.valueOf(total);
+        totalString = String.valueOf(total);
+        Log.d(TAG,totalString);
+        num1="";
+        num2="";
+        secondarytxt.setText("");
+        primarytxt.setText(totalString);
+        num1=totalString;
+    }
+    private void calculate1(){
+        number1 = Integer.parseInt(num2);
+        number2 = Integer.parseInt(num1);
+        Log.d(TAG,operateSecondary);
+        if(operateSecondary.equals("+")){
+            Log.d(TAG,"plus");
+            total = number1+number2 ;
+        }else if(operateSecondary.equals("-")){
+            total = number1-number2 ;
+        }else if(operateSecondary.equals("x")){
+            total = number1*number2 ;
+        }else if(operateSecondary.equals("/")){
+            total = number1/number2 ;
+        }else{
+            //
+        }
+
+        totalString = String.valueOf(total);
         Log.d(TAG,totalString);
         num1="";
         num2="";
@@ -115,7 +145,9 @@ public class CalActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG,"press button");
-
+                    if(num2!=""){
+                        num1="";
+                    }
                     Button thisButton = (Button) v;
                     num1 += thisButton.getText().toString();
                     primarytxt.setText(num1);//num1
@@ -136,12 +168,18 @@ public class CalActivity extends AppCompatActivity {
                     operate = thisButton1.getText().toString();
                     Log.d(TAG,operate);
                     if(operate!=""){
-                        num2=num1;
-                        secondarytxt.setText(num2+" "+operate);
+                            if(u>1){
+                                Log.d(TAG,"U ma la");
+                                calculate1();
+                                num2=totalString;
+                                secondarytxt.setText(num2);
+                            }
+                            operateSecondary=operate;
+                            num2=num1;
+                        secondarytxt.setText(num2+" "+operateSecondary);
                         primarytxt.setText("");
-                        num1="";
+                        u++;
                     }
-
                 }
             });
         }
