@@ -13,7 +13,9 @@ public class CalActivity extends AppCompatActivity {
     private String tod = "0";
     private String TAG="TEST";
     private String totalString="";
-    private int total,number1,number2 = 0;
+    private int total=0;
+    private int number1=0;
+    private int number2 = 0;
     private int u =1;
     private TextView primarytxt,secondarytxt;
     private String num1="";
@@ -145,9 +147,6 @@ public class CalActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG,"press button");
-                    if(num2!=""){
-                        num1="";
-                    }
                     Button thisButton = (Button) v;
                     num1 += thisButton.getText().toString();
                     primarytxt.setText(num1);//num1
@@ -167,6 +166,9 @@ public class CalActivity extends AppCompatActivity {
                     Button thisButton1 = (Button) view;
                     operate = thisButton1.getText().toString();
                     Log.d(TAG,operate);
+                    if(num1==""){
+//                        operateSecondary=operate;
+                    }else
                     if(operate!=""){
                             if(u>1){
                                 Log.d(TAG,"U ma la");
@@ -176,6 +178,7 @@ public class CalActivity extends AppCompatActivity {
                             }
                             operateSecondary=operate;
                             num2=num1;
+                        num1="";
                         secondarytxt.setText(num2+" "+operateSecondary);
                         primarytxt.setText("");
                         u++;
