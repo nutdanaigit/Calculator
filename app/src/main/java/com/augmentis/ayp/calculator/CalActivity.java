@@ -2,6 +2,7 @@ package com.augmentis.ayp.calculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.test.suitebuilder.TestMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,20 +11,11 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 
 public class CalActivity extends AppCompatActivity {
-    private String tod = "0";
-    private String TAG="TEST";
-    private String totalString="";
-    private int total=0;
-    private int number1=0;
-    private int number2 = 0;
-    private int u =1;
+    private String Test="";
+    private String TAG ="TEST";
     private TextView primarytxt,secondarytxt;
-    private String num1="";
-    private String num2="";
-    private String operate="";
-    private String operateSecondary="";
-    private Button result,clean;
-
+    protected Button result,clean;
+    Calculator calculator = new Calculator();
     Button[] numberButtons;
     Button[] operatorButtons;
 
@@ -59,85 +51,31 @@ public class CalActivity extends AppCompatActivity {
         result = (Button) findViewById(R.id.as_btn);
         clean = (Button) findViewById(R.id.c_btn);
 
-        primarytxt.setText(tod);
-        bindButton();
 
-        clean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                primarytxt.setText("0");
-                secondarytxt.setText("");
-                num1="";
-                num2="";
-                number1=0;
-                number2=0;
-                u=1;
-            }
-        });
+        bindButton();
 
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view1) {
-                if(num1!=""&&num2!=""){
-                    Log.d(TAG,"hoole");
-                    calculate();
-                    u=1;
-                }
+                calculator.pressEqual();
+                String v = String.valueOf(calculator.getResult());
+                primarytxt.setText(v);
+                secondarytxt.setText("");
             }
         });
+        clean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Test="";
+                primarytxt.setText("0");
+                secondarytxt.setText("");
+                calculator.pressclean();
+            }
+        });
+
     }
 
 
-    private void calculate(){
-         number1 = Integer.parseInt(num2);
-         number2 = Integer.parseInt(num1);
-            Log.d(TAG,operate);
-        if(operate.equals("+")){
-            Log.d(TAG,"plus");
-            total = number1+number2 ;
-        }else if(operate.equals("-")){
-            total = number1-number2 ;
-        }else if(operate.equals("x")){
-            total = number1*number2 ;
-        }else if(operate.equals("/")){
-            total = number1/number2 ;
-        }else{
-            //
-        }
-
-        totalString = String.valueOf(total);
-        Log.d(TAG,totalString);
-        num1="";
-        num2="";
-        secondarytxt.setText("");
-        primarytxt.setText(totalString);
-        num1=totalString;
-    }
-    private void calculate1(){
-        number1 = Integer.parseInt(num2);
-        number2 = Integer.parseInt(num1);
-        Log.d(TAG,operateSecondary);
-        if(operateSecondary.equals("+")){
-            Log.d(TAG,"plus");
-            total = number1+number2 ;
-        }else if(operateSecondary.equals("-")){
-            total = number1-number2 ;
-        }else if(operateSecondary.equals("x")){
-            total = number1*number2 ;
-        }else if(operateSecondary.equals("/")){
-            total = number1/number2 ;
-        }else{
-            //
-        }
-
-        totalString = String.valueOf(total);
-        Log.d(TAG,totalString);
-        num1="";
-        num2="";
-        secondarytxt.setText("");
-        primarytxt.setText(totalString);
-        num1=totalString;
-    }
     private void bindButton() {
         int l = numberBtn.length;
         numberButtons = new Button[l];
@@ -146,10 +84,9 @@ public class CalActivity extends AppCompatActivity {
             numberButtons[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG,"press button");
                     Button thisButton = (Button) v;
-                    num1 += thisButton.getText().toString();
-                    primarytxt.setText(num1);//num1
+                    calculator.pressNumber(thisButton.getText().toString());
+                    primarytxt.setText(calculator.temp);//num1
 
                 }
             });
@@ -162,34 +99,20 @@ public class CalActivity extends AppCompatActivity {
             operatorButtons[j].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG,"thisbutton1");
                     Button thisButton1 = (Button) view;
-                    operate = thisButton1.getText().toString();
-                    Log.d(TAG,operate);
-                    if(num1==""){
-//                        operateSecondary=operate;
-                    }else
-                    if(operate!=""){
-                            if(u>1){
-                                Log.d(TAG,"U ma la");
-                                calculate1();
-                                num2=totalString;
-                                secondarytxt.setText(num2);
-                            }
-                            operateSecondary=operate;
-                            num2=num1;
-                        num1="";
-                        secondarytxt.setText(num2+" "+operateSecondary);
-                        primarytxt.setText("");
-                        u++;
+                    calculator.pressOperator(thisButton1.getText().toString());
+                    if(calculator.operator==thisButton1.getText().toString()){
+                        Test += String.valueOf(calculator.numberThree)+thisButton1.getText().toString();
+                    }else{
+                        //
+
+
                     }
+                    secondarytxt.setText(Test);
+                    primarytxt.setText("");
                 }
             });
         }
     }
-
-
-
-
 }
 
