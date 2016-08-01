@@ -14,8 +14,13 @@ public class CalActivity extends AppCompatActivity {
     private String Test="";
     private String TAG ="TEST";
     private TextView primarytxt,secondarytxt;
+    private String a="";
+    private String b="";
+    private String c="";
     protected Button result,clean;
     Calculator calculator = new Calculator();
+
+
     Button[] numberButtons;
     Button[] operatorButtons;
 
@@ -57,10 +62,13 @@ public class CalActivity extends AppCompatActivity {
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view1) {
-                calculator.pressEqual();
-                String v = String.valueOf(calculator.getResult());
-                primarytxt.setText(v);
-                secondarytxt.setText("");
+                if(!primarytxt.getText().equals("")) {
+                    calculator.pressEqual();
+                    String v = String.valueOf(calculator.getResult());
+                    primarytxt.setText(v);
+                    secondarytxt.setText("");
+                    secondarytxt.setText(v);
+                }
             }
         });
         clean.setOnClickListener(new View.OnClickListener() {
@@ -101,15 +109,26 @@ public class CalActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Button thisButton1 = (Button) view;
                     calculator.pressOperator(thisButton1.getText().toString());
-                    if(calculator.operator==thisButton1.getText().toString()){
-                        Test += String.valueOf(calculator.numberThree)+thisButton1.getText().toString();
+                    if(!primarytxt.getText().equals("")){
+                        Log.d(TAG,"primary null");
+                        a = String.valueOf(calculator.numberThree);
+                        b = thisButton1.getText().toString();
+                        Test += a+" "+b+" ";
+                        secondarytxt.setText(Test);
+                        primarytxt.setText("");
                     }else{
-                        //
+                        Log.d(TAG,"primary no null");
+                        int n = Test.length();
 
+                        String d=Test.substring(0,n-2);
 
+                        b = thisButton1.getText().toString();
+                        Test="";
+                        Test += d+b+" ";
+                        Log.d(TAG,Test);
+                        secondarytxt.setText(Test);
+                        primarytxt.setText("");
                     }
-                    secondarytxt.setText(Test);
-                    primarytxt.setText("");
                 }
             });
         }

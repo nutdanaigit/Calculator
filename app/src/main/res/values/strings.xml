@@ -4,11 +4,11 @@
     <string name="reset_btn">C</string>
     <string name="plus_btn">+</string>
     <string name="minus_btn">-</string>
-    <string name="multiply_btn">x</string>
+    <string name="multiply_btn">\u00D7</string>
     <string name="one_btn">1</string>
     <string name="two_btn">2</string>
     <string name="three_btn">3</string>
-    <string name="divide_btn">/</string>
+    <string name="divide_btn">\u00F7</string>
     <string name="four_btn">4</string>
     <string name="five_btn">5</string>
     <string name="six_btn">6</string>
